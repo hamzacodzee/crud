@@ -4,6 +4,8 @@ import { removeUsers, usersList, whichToEdit } from "../store/slice/UserSlice";
 import DeleteAll from "./DeleteAll";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
 const DisplayData = () => {
   const navigate = useNavigate();
@@ -39,11 +41,13 @@ const DisplayData = () => {
       width: 210,
       renderCell: (params) => (
         <>
-          <button onClick={() => deleteUser(params.row.id)}>Delete</button>
+          <icon onClick={() => editUser(params.row.id, params.row)}>
+            <EditNoteIcon />
+          </icon>
+          <icon onClick={() => deleteUser(params.row.id)}>
+            <DeleteIcon />
+          </icon>
           &nbsp;
-          <button onClick={() => editUser(params.row.id, params.row)}>
-            Edit
-          </button>
         </>
       ),
     },
@@ -61,7 +65,14 @@ const DisplayData = () => {
   const [copyList, setCopyList] = useState(originalList);
 
   const requestSearch = (searched) => {
-    setCopyList(originalList.filter((item) => item.name.toLowerCase().includes(searched.toLowerCase())));
+    setCopyList(
+      originalList.filter((item) => {
+        const values = Object.values(item).map((value) =>
+          String(value).toLowerCase()
+        );
+        return values.some((value) => value.includes(searched.toLowerCase()));
+      })
+    );
   };
 
   const rows = copyList.length > 0 ? copyList : originalList;
@@ -73,17 +84,15 @@ const DisplayData = () => {
   return (
     <div>
       <h2>User Table</h2>
-
-      Search: <input
+      &nbsp; Search:
+      <input
         type="search"
         name="search"
         id="search"
         onInput={(e) => requestSearch(e.target.value)}
-      /> 
+      />
       <br />
       <br />
-      
-
       <div style={{ width: "100%" }}>
         <DataGrid
           rows={rows}
@@ -95,13 +104,21 @@ const DisplayData = () => {
           }}
           pageSizeOptions={[5, 10]}
           style={tableStyle}
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            m: 5,
+            borderColor: "light",
+            // '& MuiTablePagination-displayedRows': {
+            //   backgroundColor: 'white',
+            //   color:'black',
+            // },
+          }}
         />
       </div>
-
       <DeleteAll />
       <br />
       <br />
-
     </div>
   );
 };
