@@ -1,24 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import AddUser from './components/AddUser.jsx';
+import DisplayData from './components/DisplayData.jsx';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import UserEdit from './components/UserEdit.jsx';
 
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>React Redux Practice</h1>
+
+      <div>
+
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<DisplayData />} />
+            <Route path="/add" element={<AddUser />} />
+            <Route path="/edit" element={<UserEdit />} />
+          </Routes>
+        </BrowserRouter>
+
+
+
+      </div>
     </div>
+
   );
 }
 
