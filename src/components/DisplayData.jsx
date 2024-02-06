@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUsers, usersList, whichToEdit } from "../store/slice/UserSlice";
 import DeleteAll from "./DeleteAll";
@@ -11,7 +11,6 @@ const DisplayData = () => {
 
   const data = useSelector(usersList);
 
-
   const deleteUser = (id) => {
     dispatch(removeUsers(id));
   };
@@ -22,22 +21,22 @@ const DisplayData = () => {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "gender", headerName: "Gender", width: 150 },
-    { field: "address", headerName: "Address", width: 150 },
-    { field: "country", headerName: "Country", width: 150 },
+    { field: "name", headerName: "Name", width: 210 },
+    { field: "gender", headerName: "Gender", width: 210 },
+    { field: "address", headerName: "Address", width: 210 },
+    { field: "country", headerName: "Country", width: 210 },
     {
       field: "years",
       headerName: "Years",
       // description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 150,
+      width: 210,
     },
     {
       field: "Action",
       headerName: "Action",
       sortable: false,
-      width: 150,
+      width: 210,
       renderCell: (params) => (
         <>
           <button onClick={() => deleteUser(params.row.id)}>Delete</button>
@@ -46,11 +45,11 @@ const DisplayData = () => {
             Edit
           </button>
         </>
-      )
-    }
+      ),
+    },
   ];
 
-  const rows = data?.map((user, id) => ({
+  const originalList = data?.map((user, id) => ({
     id: id,
     name: user.name,
     gender: user.gender,
@@ -59,15 +58,33 @@ const DisplayData = () => {
     address: user.address,
   }));
 
-  const tableStyle = {
-    color: 'white',
-};
+  const [copyList, setCopyList] = useState(originalList);
 
+  const requestSearch = (searched) => {
+    setCopyList(originalList.filter((item) => item.name.toLowerCase().includes(searched.toLowerCase())));
+  };
+
+  const rows = copyList.length > 0 ? copyList : originalList;
+
+  const tableStyle = {
+    color: "white",
+  };
 
   return (
     <div>
       <h2>User Table</h2>
-      <div style={{  width: "90%" }}>
+
+      Search: <input
+        type="search"
+        name="search"
+        id="search"
+        onInput={(e) => requestSearch(e.target.value)}
+      /> 
+      <br />
+      <br />
+      
+
+      <div style={{ width: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -82,8 +99,9 @@ const DisplayData = () => {
       </div>
 
       <DeleteAll />
+      <br />
+      <br />
 
-      
     </div>
   );
 };
