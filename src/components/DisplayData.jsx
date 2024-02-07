@@ -23,30 +23,30 @@ const DisplayData = () => {
   };
 
   const columns = [
-    { field: "name", headerName: "Name", width: 210 },
-    { field: "gender", headerName: "Gender", width: 210 },
+    { field: "name", headerName: "Name", width: 180 },
+    { field: "gender", headerName: "Gender", width: 100 },
     { field: "address", headerName: "Address", width: 210 },
-    { field: "country", headerName: "Country", width: 210 },
+    { field: "country", headerName: "Country", width: 150 },
     {
       field: "years",
       headerName: "Years",
       // description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 210,
+      width: 450,
     },
     {
       field: "Action",
       headerName: "Action",
       sortable: false,
-      width: 210,
+      width:100,
       renderCell: (params) => (
         <>
-          <icon onClick={() => editUser(params.row.id, params.row)}>
+          <i onClick={() => editUser(params.row.id, params.row)}>
             <EditNoteIcon />
-          </icon>
-          <icon onClick={() => deleteUser(params.row.id)}>
+          </i>
+          <i onClick={() => deleteUser(params.row.id)}>
             <DeleteIcon />
-          </icon>
+          </i>
           &nbsp;
         </>
       ),
@@ -83,7 +83,10 @@ const DisplayData = () => {
 
   return (
     <div>
+      <br />
+      
       <h2>User Table</h2>
+      <br />
       &nbsp; Search:
       <input
         type="search"

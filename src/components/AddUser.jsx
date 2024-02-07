@@ -30,6 +30,35 @@ const AddUser = () => {
       validationSchema: addUserSchema,
     });
 
+  const years = [
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026",
+    "2027",
+    "2028",
+    "2029",
+    "2030",
+  ];
+
+  const MyYears = ({ year }) => {
+    return (
+      <label>
+        {year}
+        <input
+          type="checkbox"
+          value={year}
+          name="years"
+          onBlur={handleBlur}
+          onChange={handleChange}
+          checked={values.years.includes(year)}
+        />&nbsp;&nbsp;
+      </label> 
+    );
+  };
+
   return (
     <div>
       <h2>Add User</h2>
@@ -75,30 +104,11 @@ const AddUser = () => {
           ) : null}
         </label>
         <br /> <br />
-        <label>
-          2021
-          <input
-            type="checkbox"
-            value="2021"
-            name="years"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            checked={values.years.includes("2021")}
-          />
-        </label>
-        <label>
-          2030
-          <input
-            type="checkbox"
-            value="2030"
-            name="years"
-            onBlur={handleBlur}
-            onChange={handleChange}
-            checked={values.years.includes("2030")}
-          />
-          <br />
-          {errors.years && touched.years ? <small>{errors.years}</small> : null}
-        </label>
+        {years.map((year) => (
+          <MyYears year={year} key={year} />
+        ))}
+        <br />
+        {errors.years && touched.years ? <small>{errors.years}</small> : null}
         <br /> <br />
         <textarea
           value={values.address}
